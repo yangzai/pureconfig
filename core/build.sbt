@@ -16,7 +16,7 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   shapeless,
   scalaMacrosParadise,
-  typesafeConfig,
+  shocon,
   scalaTest,
   joda % "test",
   jodaConvert % "test",

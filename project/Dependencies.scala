@@ -11,11 +11,13 @@ object Dependencies {
     val jodaConvert         = "1.8"
     val scalaCheck          = "1.13.4"
     val scalaCheckShapeless = "1.1.3"
+    val shocon              = "0.1.7"
   }
 
   val shapeless = "com.chuusai" %% "shapeless" % Version.shapeless
   val scalaMacrosParadise = compilerPlugin("org.scalamacros" % "paradise" % Version.scalaMacrosParadise cross CrossVersion.patch)
   val typesafeConfig = "com.typesafe" % "config" % Version.typesafeConfig
+  val shocon = "eu.unicredit" %% "shocon" % Version.shocon
   val joda = "joda-time" % "joda-time" % Version.joda
   val jodaConvert = "org.joda" % "joda-convert" % Version.jodaConvert
 
