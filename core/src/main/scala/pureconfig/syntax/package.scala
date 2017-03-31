@@ -7,6 +7,7 @@ import scala.reflect.ClassTag
 
 package object syntax {
   implicit class PimpedAny[T](val any: T) extends AnyVal {
+    @pureconfig.deprecated
     def toConfig(implicit writer: ConfigWriter[T]): ConfigValue = writer.to(any)
   }
 
@@ -18,12 +19,16 @@ package object syntax {
   }
 
   implicit class PimpedConfigValue(val conf: ConfigValue) extends AnyVal {
+    @pureconfig.deprecated
     def to[T](implicit reader: ConfigReader[T]): Either[ConfigReaderFailures, T] = reader.from(conf)
+    @pureconfig.deprecated
     def toOrThrow[T](implicit reader: ConfigReader[T], cl: ClassTag[T]): T = getResultOrThrow(reader.from(conf))(cl)
   }
 
   implicit class PimpedConfig(val conf: TypesafeConfig) extends AnyVal {
+    @pureconfig.deprecated
     def to[T: ConfigReader]: Either[ConfigReaderFailures, T] = conf.root().to[T]
+    @pureconfig.deprecated
     def toOrThrow[T](implicit reader: ConfigReader[T], cl: ClassTag[T]): T = getResultOrThrow(conf.root().to[T])(cl)
   }
 }

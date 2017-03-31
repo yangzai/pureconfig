@@ -5,6 +5,7 @@ package pureconfig
  *
  * @tparam T the type of case class for which this hint applies
  */
+@pureconfig.deprecated
 trait ProductHint[T] {
 
   /**
@@ -13,16 +14,19 @@ trait ProductHint[T] {
    * @param fieldName the case class field
    * @return the key in the config object associated with the given case class field.
    */
+  @pureconfig.deprecated
   def configKey(fieldName: String): String
 
   /**
    * A boolean indicating if the default arguments of the case class should be used when fields are missing
    */
+  @pureconfig.deprecated
   def useDefaultArgs: Boolean
 
   /**
    * A boolean indicating if config keys that do not map to a case class field are allowed in config objects
    */
+  @pureconfig.deprecated
   def allowUnknownKeys: Boolean
 }
 
@@ -34,8 +38,10 @@ private[pureconfig] case class ProductHintImpl[T](
   def configKey(fieldName: String) = fieldMapping(fieldName)
 }
 
+@pureconfig.deprecated
 object ProductHint {
 
+  @pureconfig.deprecated
   def apply[T](
     fieldMapping: ConfigFieldMapping = ConfigFieldMapping(CamelCase, KebabCase),
     useDefaultArgs: Boolean = true,

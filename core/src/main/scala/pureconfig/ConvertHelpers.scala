@@ -10,8 +10,10 @@ import pureconfig.error._
 /**
  * Useful helpers for building `ConfigConvert` instances and dealing with results.
  */
+@pureconfig.deprecated
 trait ConvertHelpers {
 
+  @pureconfig.deprecated
   def combineResults[A, B, C](first: Either[ConfigReaderFailures, A], second: Either[ConfigReaderFailures, B])(f: (A, B) => C): Either[ConfigReaderFailures, C] =
     (first, second) match {
       case (Right(a), Right(b)) => Right(f(a, b))
@@ -20,8 +22,10 @@ trait ConvertHelpers {
       case (l: Left[_, _], _) => l.asInstanceOf[Left[ConfigReaderFailures, Nothing]]
     }
 
+  @pureconfig.deprecated
   def fail[A](failure: ConfigReaderFailure): Either[ConfigReaderFailures, A] = Left(ConfigReaderFailures(failure))
 
+  @pureconfig.deprecated
   def failWithThrowable[A](throwable: Throwable): Option[ConfigValueLocation] => Either[ConfigReaderFailures, A] = location => fail[A](ThrowableFailure(throwable, location, None))
 
   private[pureconfig] def improveFailures[Z](result: Either[ConfigReaderFailures, Z], keyStr: String, location: Option[ConfigValueLocation]): Either[ConfigReaderFailures, Z] =
@@ -66,6 +70,7 @@ trait ConvertHelpers {
     case x => _ => Right(x)
   }
 
+  @pureconfig.deprecated
   def catchReadError[T](f: String => T)(implicit ct: ClassTag[T]): String => Option[ConfigValueLocation] => Either[CannotConvert, T] =
     string => location =>
       try Right(f(string)) catch {
@@ -77,6 +82,7 @@ trait ConvertHelpers {
    * - `Success(t)` becomes `_ => Right(t)`
    * - `Failure(e)` becomes `location => Left(CannotConvert(value, type, e.getMessage, location)`
    */
+  @pureconfig.deprecated
   def tryF[T](f: String => Try[T])(implicit ct: ClassTag[T]): String => Option[ConfigValueLocation] => Either[CannotConvert, T] =
     string => location =>
       f(string) match {
@@ -89,6 +95,7 @@ trait ConvertHelpers {
    * - `Some(t)` becomes `_ => Right(t)`
    * - `None` becomes `location => Left(CannotConvert(value, type, "", location)`
    */
+  @pureconfig.deprecated
   def optF[T](f: String => Option[T])(implicit ct: ClassTag[T]): String => Option[ConfigValueLocation] => Either[CannotConvert, T] =
     string => location =>
       f(string) match {
@@ -97,4 +104,5 @@ trait ConvertHelpers {
       }
 }
 
+@pureconfig.deprecated
 object ConvertHelpers extends ConvertHelpers

@@ -1,9 +1,12 @@
 package pureconfig
 
+@pureconfig.deprecated
 trait ConfigFieldMapping extends (String => String) {
+  @pureconfig.deprecated
   def apply(fieldName: String): String
 }
 
+@pureconfig.deprecated
 object ConfigFieldMapping {
   /**
    * Creates a ConfigFieldMapping from the provided function, mapping names in
@@ -14,6 +17,7 @@ object ConfigFieldMapping {
    *        values to names in the configuration file
    * @return a ConfigFieldMapping created from the provided function.
    */
+  @pureconfig.deprecated
   def apply(f: String => String): ConfigFieldMapping = new ConfigFieldMapping {
     def apply(fieldName: String): String = f(fieldName)
   }
@@ -30,6 +34,7 @@ object ConfigFieldMapping {
    * @return a ConfigFieldMapping created according to the provided naming
    *         conventions.
    */
+  @pureconfig.deprecated
   def apply(typeFieldConvention: NamingConvention, configFieldConvention: NamingConvention): ConfigFieldMapping = {
     if (typeFieldConvention == configFieldConvention) {
       apply(identity(_))

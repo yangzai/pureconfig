@@ -6,6 +6,7 @@ package pureconfig.error
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
+@pureconfig.deprecated
 final case class ConfigReaderException[T](failures: ConfigReaderFailures)(implicit ct: ClassTag[T]) extends RuntimeException {
 
   override def getMessage: String = {
@@ -41,6 +42,7 @@ final case class ConfigReaderException[T](failures: ConfigReaderFailures)(implic
 
 }
 
+@pureconfig.deprecated
 object ConfigReaderException {
   private[ConfigReaderException] def descriptionWithLocation(failure: ConfigReaderFailure): String =
     failure.location.fold(failure.description)(_.description + " " + failure.description)

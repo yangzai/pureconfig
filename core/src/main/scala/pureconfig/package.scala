@@ -23,6 +23,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfig[Config](implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -39,6 +40,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfig[Config](namespace: String)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -55,6 +57,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfig[Config](path: Path)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -72,6 +75,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfig[Config](path: Path, namespace: String)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -81,10 +85,12 @@ package object pureconfig {
   }
 
   /** Load a configuration of type `Config` from the given `Config` */
+  @pureconfig.deprecated
   def loadConfig[Config](conf: TypesafeConfig)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] =
     reader.from(conf.root())
 
   /** Load a configuration of type `Config` from the given `Config` */
+  @pureconfig.deprecated
   def loadConfig[Config](conf: TypesafeConfig, namespace: String)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     val cv = conf.getConfig(namespace).root()
     improveFailures[Config](reader.from(cv), namespace, ConfigValueLocation(cv))
@@ -98,6 +104,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfigWithFallback[Config](conf: TypesafeConfig)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -115,6 +122,7 @@ package object pureconfig {
    *         `Config` from the configuration files, else a `Failure` with details on why it
    *         isn't possible
    */
+  @pureconfig.deprecated
   def loadConfigWithFallback[Config](conf: TypesafeConfig, namespace: String)(implicit reader: ConfigReader[Config]): Either[ConfigReaderFailures, Config] = {
     for {
       _ <- invalidateCaches().right
@@ -123,6 +131,7 @@ package object pureconfig {
     } yield config
   }
 
+  @pureconfig.deprecated
   private def getResultOrThrow[Config](failuresOrResult: Either[ConfigReaderFailures, Config])(implicit ct: ClassTag[Config]): Config = {
     failuresOrResult match {
       case Right(config) => config
@@ -135,6 +144,7 @@ package object pureconfig {
    *
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](loadConfig[Config])
@@ -146,6 +156,7 @@ package object pureconfig {
    * @param namespace the base namespace from which the configuration should be load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](namespace: String)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](loadConfig[Config](namespace))
@@ -157,6 +168,7 @@ package object pureconfig {
    *
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](path: Path)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](loadConfig[Config](path))
@@ -169,6 +181,7 @@ package object pureconfig {
    * @param namespace the base namespace from which the configuration should be load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](path: Path, namespace: String)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](loadConfig[Config](path, namespace))
@@ -180,6 +193,7 @@ package object pureconfig {
    * @param conf Typesafe configuration to load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](conf: TypesafeConfig)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](reader.from(conf.root()))
@@ -192,6 +206,7 @@ package object pureconfig {
    * @param namespace the base namespace from which the configuration should be load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigOrThrow[Config](conf: TypesafeConfig, namespace: String)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     val cv = conf.getConfig(namespace).root()
@@ -204,6 +219,7 @@ package object pureconfig {
    * @param conf Typesafe configuration to load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigWithFallbackOrThrow[Config](conf: TypesafeConfig)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     val errorOrConfig =
@@ -222,6 +238,7 @@ package object pureconfig {
    * @param namespace the base namespace from which the configuration should be load
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigWithFallbackOrThrow[Config](conf: TypesafeConfig, namespace: String)(implicit reader: ConfigReader[Config], ct: ClassTag[Config]): Config = {
     val errorOrConfig =
@@ -240,6 +257,7 @@ package object pureconfig {
    * @param outputPath Where to write the configuration
    * @param overrideOutputPath Override the path if it already exists
    */
+  @pureconfig.deprecated
   @throws[IllegalArgumentException]
   def saveConfigAsPropertyFile[Config](conf: Config, outputPath: Path, overrideOutputPath: Boolean = false)(implicit writer: ConfigWriter[Config]): Unit = {
     if (!overrideOutputPath && Files.isRegularFile(outputPath)) {
@@ -258,6 +276,7 @@ package object pureconfig {
    * @param conf The configuration to write
    * @param outputStream The stream in which the configuration should be written
    */
+  @pureconfig.deprecated
   def saveConfigToStream[Config](conf: Config, outputStream: OutputStream)(implicit writer: ConfigWriter[Config]): Unit = {
     val printOutputStream = new PrintStream(outputStream)
     val rawConf = writer.to(conf)
@@ -274,6 +293,7 @@ package object pureconfig {
    *
    * @param files Files ordered in decreasing priority containing part or all of a `Config`. Must not be empty.
    */
+  @pureconfig.deprecated
   def loadConfigFromFiles[Config: ConfigReader](files: Traversable[Path]): Either[ConfigReaderFailures, Config] = {
     if (files.isEmpty) {
       ConfigConvert.failWithThrowable[Config](new IllegalArgumentException("The config files to load must not be empty."))(None)
@@ -293,6 +313,7 @@ package object pureconfig {
    * @see [[loadConfigFromFiles]]
    * @return the configuration
    */
+  @pureconfig.deprecated
   @throws[ConfigReaderException[_]]
   def loadConfigFromFilesOrThrow[Config: ConfigReader](files: Traversable[Path])(implicit ct: ClassTag[Config]): Config = {
     getResultOrThrow[Config](loadConfigFromFiles[Config](files))

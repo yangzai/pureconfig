@@ -15,10 +15,12 @@ import com.typesafe.config.{ ConfigOrigin, ConfigRenderOptions, ConfigValue, Con
  * @param lineNumber the line number (starting at 0), where the given
  *                   ConfigValue definition starts
  */
+@pureconfig.deprecated
 case class ConfigValueLocation(url: URL, lineNumber: Int) {
   def description: String = s"($url:$lineNumber)"
 }
 
+@pureconfig.deprecated
 object ConfigValueLocation {
   /**
    * Helper method to create an optional ConfigValueLocation from a ConfigValue.
@@ -32,6 +34,7 @@ object ConfigValueLocation {
    *         locations from ConfigValues that are not in files or for
    *         ConfigValues that are null.
    */
+  @pureconfig.deprecated
   def apply(cv: ConfigValue): Option[ConfigValueLocation] =
     Option(cv).flatMap(v => apply(v.origin()))
 
@@ -47,6 +50,7 @@ object ConfigValueLocation {
    *         locations from ConfigOrigin that are not in files or for
    *         ConfigOrigin that are null.
    */
+  @pureconfig.deprecated
   def apply(co: ConfigOrigin): Option[ConfigValueLocation] =
     Option(co).flatMap { origin =>
       if (origin.url != null && origin.lineNumber != -1)
@@ -61,6 +65,7 @@ object ConfigValueLocation {
  * ConfigValue. The failure contains an optional location of the ConfigValue
  * that raised the error.
  */
+@pureconfig.deprecated
 sealed abstract class ConfigReaderFailure {
   /**
    * The optional location of the ConfigReaderFailure.
@@ -88,6 +93,7 @@ sealed abstract class ConfigReaderFailure {
  * A failure representing the inability to convert a null value. Since a null
  * represents a missing value, the location of this failure is always None.
  */
+@pureconfig.deprecated
 final case object CannotConvertNull extends ConfigReaderFailure {
   val location = None
   val path = None
@@ -108,6 +114,7 @@ final case object CannotConvertNull extends ConfigReaderFailure {
  *                 failure
  * @param path an optional path to the value that couldn't be converted
  */
+@pureconfig.deprecated
 final case class CannotConvert(value: String, toType: String, because: String, location: Option[ConfigValueLocation], path: Option[String]) extends ConfigReaderFailure {
 
   def description = s"Cannot convert '$value' to $toType: $because."
@@ -126,6 +133,7 @@ final case class CannotConvert(value: String, toType: String, because: String, l
  * @param location an optional location of the ConfigValue that raised the
  *                 failure
  */
+@pureconfig.deprecated
 final case class CollidingKeys(key: String, existingValue: String, location: Option[ConfigValueLocation]) extends ConfigReaderFailure {
   def path = Some(key)
 
@@ -142,6 +150,7 @@ final case class CollidingKeys(key: String, existingValue: String, location: Opt
  * @param location an optional location of the ConfigValue that raised the
  *                 failure
  */
+@pureconfig.deprecated
 final case class KeyNotFound(key: String, location: Option[ConfigValueLocation]) extends ConfigReaderFailure {
   def path = Some(key)
 
@@ -161,6 +170,7 @@ final case class KeyNotFound(key: String, location: Option[ConfigValueLocation])
  * @param location an optional location of the ConfigValue that raised the
  *                 failure
  */
+@pureconfig.deprecated
 final case class UnknownKey(key: String, location: Option[ConfigValueLocation]) extends ConfigReaderFailure {
   def path = Some(key)
 
@@ -179,6 +189,7 @@ final case class UnknownKey(key: String, location: Option[ConfigValueLocation]) 
  *                 failure
  * @param path an optional path to the value that had a wrong type
  */
+@pureconfig.deprecated
 final case class WrongType(foundType: ConfigValueType, expectedTypes: Set[ConfigValueType], location: Option[ConfigValueLocation], path: Option[String]) extends ConfigReaderFailure {
   def description = s"""Expected type ${expectedTypes.mkString(" or ")}. Found $foundType instead."""
 
@@ -194,6 +205,7 @@ final case class WrongType(foundType: ConfigValueType, expectedTypes: Set[Config
  *                 failure
  * @param path an optional path to the value that raised the Throwable
  */
+@pureconfig.deprecated
 final case class ThrowableFailure(throwable: Throwable, location: Option[ConfigValueLocation], path: Option[String]) extends ConfigReaderFailure {
   def description = s"${throwable.getMessage}."
 
@@ -209,6 +221,7 @@ final case class ThrowableFailure(throwable: Throwable, location: Option[ConfigV
  *                 failure
  * @param path an optional path to the value which was an unexpected empty string
  */
+@pureconfig.deprecated
 final case class EmptyStringFound(typ: String, location: Option[ConfigValueLocation], path: Option[String]) extends ConfigReaderFailure {
   def description = s"Empty string found when trying to convert to $typ."
 
@@ -225,6 +238,7 @@ final case class EmptyStringFound(typ: String, location: Option[ConfigValueLocat
  * @param path an optional path to the value who doesn't have a valid choice for
  *             a coproduct
  */
+@pureconfig.deprecated
 final case class NoValidCoproductChoiceFound(value: ConfigValue, location: Option[ConfigValueLocation], path: Option[String]) extends ConfigReaderFailure {
   def description = s"No valid coproduct choice found for '${value.render(ConfigRenderOptions.concise())}'."
 
@@ -239,6 +253,7 @@ final case class NoValidCoproductChoiceFound(value: ConfigValue, location: Optio
  * @param location an optional location of the ConfigValue that raised the
  *                 failure
  */
+@pureconfig.deprecated
 final case class CannotParse(msg: String, location: Option[ConfigValueLocation]) extends ConfigReaderFailure {
   // Since this failure is raised when trying to parse a configuration, it isn't tied to a specific path
   val path = None
