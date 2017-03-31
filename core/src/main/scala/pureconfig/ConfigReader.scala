@@ -12,7 +12,9 @@ import pureconfig.error.{ ConfigReaderFailure, ConfigReaderFailures, ConfigValue
  *
  * @tparam T the type of objects readable by this `ConfigReader`
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait ConfigReader[T] {
 
   /**
@@ -21,45 +23,63 @@ trait ConfigReader[T] {
    * @param config The configuration from which load the config
    * @return either a list of failures or an object of type `T`
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def from(config: ConfigValue): Either[ConfigReaderFailures, T]
 }
 
 /**
  * Provides methods to create [[ConfigReader]] instances.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object ConfigReader extends BasicReaders with DerivedReaders {
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply[T](implicit reader: ConfigReader[T]): ConfigReader[T] = reader
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromString[T](fromF: String => Option[ConfigValueLocation] => Either[ConfigReaderFailure, T]): ConfigReader[T] = new ConfigReader[T] {
     override def from(config: ConfigValue): Either[ConfigReaderFailures, T] = stringToEitherConvert(fromF)(config)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromStringTry[T](fromF: String => Try[T])(implicit ct: ClassTag[T]): ConfigReader[T] = {
     fromString[T](tryF(fromF))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromStringOpt[T](fromF: String => Option[T])(implicit ct: ClassTag[T]): ConfigReader[T] = {
     fromString[T](optF(fromF))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromNonEmptyString[T](fromF: String => Option[ConfigValueLocation] => Either[ConfigReaderFailure, T])(implicit ct: ClassTag[T]): ConfigReader[T] = {
     fromString(string => location => ensureNonEmpty(ct)(string)(location).right.flatMap(s => fromF(s)(location)))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromNonEmptyStringTry[T](fromF: String => Try[T])(implicit ct: ClassTag[T]): ConfigReader[T] = {
     fromNonEmptyString[T](tryF(fromF))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromNonEmptyStringOpt[T](fromF: String => Option[T])(implicit ct: ClassTag[T]): ConfigReader[T] = {
     fromNonEmptyString[T](optF(fromF))
   }

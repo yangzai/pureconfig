@@ -21,42 +21,58 @@ import pureconfig.ConfigConvert.{ catchReadError, viaNonEmptyString }
  */
 package object configurable {
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def localDateConfigConvert(formatter: DateTimeFormatter): ConfigConvert[LocalDate] =
     viaNonEmptyString[LocalDate](
       catchReadError(LocalDate.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def localTimeConfigConvert(formatter: DateTimeFormatter): ConfigConvert[LocalTime] =
     viaNonEmptyString[LocalTime](
       catchReadError(LocalTime.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def localDateTimeConfigConvert(formatter: DateTimeFormatter): ConfigConvert[LocalDateTime] =
     viaNonEmptyString[LocalDateTime](
       catchReadError(LocalDateTime.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def monthDayConfigConvert(formatter: DateTimeFormatter): ConfigConvert[MonthDay] =
     viaNonEmptyString[MonthDay](
       catchReadError(MonthDay.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def offsetDateTimeConfigConvert(formatter: DateTimeFormatter): ConfigConvert[OffsetDateTime] =
     viaNonEmptyString[OffsetDateTime](
       catchReadError(OffsetDateTime.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def offsetTimeConfigConvert(formatter: DateTimeFormatter): ConfigConvert[OffsetTime] =
     viaNonEmptyString[OffsetTime](
       catchReadError(OffsetTime.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def yearMonthConfigConvert(formatter: DateTimeFormatter): ConfigConvert[YearMonth] =
     viaNonEmptyString[YearMonth](
       catchReadError(YearMonth.parse(_, formatter)), _.format(formatter))
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def zonedDateTimeConfigConvert(formatter: DateTimeFormatter): ConfigConvert[ZonedDateTime] =
     viaNonEmptyString[ZonedDateTime](
       catchReadError(ZonedDateTime.parse(_, formatter)), _.format(formatter))

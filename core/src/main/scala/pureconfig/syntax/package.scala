@@ -7,7 +7,9 @@ import scala.reflect.ClassTag
 
 package object syntax {
   implicit class PimpedAny[T](val any: T) extends AnyVal {
-    @pureconfig.deprecated
+    @scala.deprecated(
+      message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+      since = "0.7.0")
     def toConfig(implicit writer: ConfigWriter[T]): ConfigValue = writer.to(any)
   }
 
@@ -19,16 +21,24 @@ package object syntax {
   }
 
   implicit class PimpedConfigValue(val conf: ConfigValue) extends AnyVal {
-    @pureconfig.deprecated
+    @scala.deprecated(
+      message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+      since = "0.7.0")
     def to[T](implicit reader: ConfigReader[T]): Either[ConfigReaderFailures, T] = reader.from(conf)
-    @pureconfig.deprecated
+    @scala.deprecated(
+      message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+      since = "0.7.0")
     def toOrThrow[T](implicit reader: ConfigReader[T], cl: ClassTag[T]): T = getResultOrThrow(reader.from(conf))(cl)
   }
 
   implicit class PimpedConfig(val conf: TypesafeConfig) extends AnyVal {
-    @pureconfig.deprecated
+    @scala.deprecated(
+      message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+      since = "0.7.0")
     def to[T: ConfigReader]: Either[ConfigReaderFailures, T] = conf.root().to[T]
-    @pureconfig.deprecated
+    @scala.deprecated(
+      message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+      since = "0.7.0")
     def toOrThrow[T](implicit reader: ConfigReader[T], cl: ClassTag[T]): T = getResultOrThrow(conf.root().to[T])(cl)
   }
 }

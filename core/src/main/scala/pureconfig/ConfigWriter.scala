@@ -7,7 +7,9 @@ import com.typesafe.config.{ ConfigValue, ConfigValueFactory }
  *
  * @tparam T the type of objects writable by this `ConfigWriter`
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait ConfigWriter[T] {
 
   /**
@@ -16,17 +18,23 @@ trait ConfigWriter[T] {
    * @param t The instance of `T` to convert
    * @return The `ConfigValue` obtained from the `T` instance
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def to(t: T): ConfigValue
 }
 
 /**
  * Provides methods to create [[ConfigWriter]] instances.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object ConfigWriter extends BasicWriters with DerivedWriters {
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply[T](implicit writer: ConfigWriter[T]): ConfigWriter[T] = writer
 
   /**
@@ -36,7 +44,9 @@ object ConfigWriter extends BasicWriters with DerivedWriters {
    * @tparam T the primitive type for which a `ConfigWriter` is to be created
    * @return a `ConfigWriter` for the type `T`.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def forPrimitive[T]: ConfigWriter[T] = new ConfigWriter[T] {
     def to(t: T) = ConfigValueFactory.fromAnyRef(t)
   }
@@ -47,7 +57,9 @@ object ConfigWriter extends BasicWriters with DerivedWriters {
    * @tparam T the type for which a `ConfigWriter` is to be created
    * @return a `ConfigWriter` for the type `T`.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def toDefaultString[T]: ConfigWriter[T] = new ConfigWriter[T] {
     def to(t: T) = ConfigValueFactory.fromAnyRef(t.toString)
   }
@@ -59,7 +71,9 @@ object ConfigWriter extends BasicWriters with DerivedWriters {
    * @tparam T the type for which a `ConfigWriter` is to be created
    * @return a `ConfigWriter` for the type `T`.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def toString[T](toF: T => String): ConfigWriter[T] = new ConfigWriter[T] {
     def to(t: T) = ConfigValueFactory.fromAnyRef(toF(t))
   }

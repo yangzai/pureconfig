@@ -15,16 +15,22 @@ import pureconfig.error.{ ConfigReaderFailure, ConfigReaderFailures, ConfigValue
 /**
  * Trait for objects capable of reading and writing objects of a given type from and to `ConfigValues`.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait ConfigConvert[T] extends ConfigReader[T] with ConfigWriter[T]
 
 /**
  * Provides methods to create [[ConfigConvert]] instances.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object ConfigConvert extends ConvertHelpers {
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply[T](implicit conv: ConfigConvert[T]): ConfigConvert[T] = conv
 
   implicit def fromReaderAndWriter[T](implicit reader: ConfigReader[T], writer: ConfigWriter[T]) = new ConfigConvert[T] {
@@ -32,33 +38,45 @@ object ConfigConvert extends ConvertHelpers {
     def to(t: T) = writer.to(t)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaString[T](fromF: String => Option[ConfigValueLocation] => Either[ConfigReaderFailure, T], toF: T => String): ConfigConvert[T] = new ConfigConvert[T] {
     override def from(config: ConfigValue): Either[ConfigReaderFailures, T] = stringToEitherConvert(fromF)(config)
     override def to(t: T): ConfigValue = ConfigValueFactory.fromAnyRef(toF(t))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaStringTry[T: ClassTag](fromF: String => Try[T], toF: T => String): ConfigConvert[T] = {
     viaString[T](tryF(fromF), toF)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaStringOpt[T: ClassTag](fromF: String => Option[T], toF: T => String): ConfigConvert[T] = {
     viaString[T](optF(fromF), toF)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaNonEmptyString[T](fromF: String => Option[ConfigValueLocation] => Either[ConfigReaderFailure, T], toF: T => String)(implicit ct: ClassTag[T]): ConfigConvert[T] = {
     viaString[T](string => location => ensureNonEmpty(ct)(string)(location).right.flatMap(s => fromF(s)(location)), toF)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaNonEmptyStringTry[T: ClassTag](fromF: String => Try[T], toF: T => String): ConfigConvert[T] = {
     viaNonEmptyString[T](tryF(fromF), toF)
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def viaNonEmptyStringOpt[T: ClassTag](fromF: String => Option[T], toF: T => String): ConfigConvert[T] = {
     viaNonEmptyString[T](optF(fromF), toF)
   }

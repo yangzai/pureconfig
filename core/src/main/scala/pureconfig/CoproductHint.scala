@@ -9,7 +9,9 @@ import pureconfig.syntax._
  *
  * @tparam T the type of the coproduct or sealed family for which this hint applies
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait CoproductHint[T] {
 
   /**
@@ -25,7 +27,9 @@ trait CoproductHint[T] {
    * @param name the name of the class or coproduct option to try
    * @return a `Either[ConfigReaderFailure, Option[ConfigValue]]` as defined above.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def from(cv: ConfigValue, name: String): Either[ConfigReaderFailures, Option[ConfigValue]]
 
   /**
@@ -37,7 +41,9 @@ trait CoproductHint[T] {
    * @return the config for the sealed family or coproduct wrapped in a `Right`, or a `Left` with the failure if some error
    *         occurred.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def to(cv: ConfigValue, name: String): Either[ConfigReaderFailures, ConfigValue]
 
   /**
@@ -47,7 +53,9 @@ trait CoproductHint[T] {
    * @param name the name of the class or coproduct option
    * @return `true` if the next class or coproduct option should be tried, `false` otherwise.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def tryNextOnFail(name: String): Boolean
 }
 
@@ -60,7 +68,9 @@ trait CoproductHint[T] {
  * By default, the field value written is the class or coproduct option name converted to lower case. This mapping can
  * be changed by overriding the method `fieldValue` of this class.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 class FieldCoproductHint[T](key: String) extends CoproductHint[T] {
 
   /**
@@ -69,10 +79,14 @@ class FieldCoproductHint[T](key: String) extends CoproductHint[T] {
    * @param name the name of the class or coproduct option
    * @return the field value associated with the given class or coproduct option name.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   protected def fieldValue(name: String): String = name.toLowerCase
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def from(cv: ConfigValue, name: String): Either[ConfigReaderFailures, Option[ConfigValue]] = cv match {
     case co: ConfigObject =>
       Option(co.get(key)) match {
@@ -86,7 +100,9 @@ class FieldCoproductHint[T](key: String) extends CoproductHint[T] {
     case _ => Left(ConfigReaderFailures(WrongType(cv.valueType, Set(ConfigValueType.OBJECT), ConfigValueLocation(cv), None)))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def to(cv: ConfigValue, name: String): Either[ConfigReaderFailures, ConfigValue] = cv match {
     case co: ConfigObject =>
       if (co.containsKey(key)) Left(ConfigReaderFailures(CollidingKeys(key, co.get(key).toString, ConfigValueLocation(co))))
@@ -96,7 +112,9 @@ class FieldCoproductHint[T](key: String) extends CoproductHint[T] {
       Left(ConfigReaderFailures(WrongType(cv.valueType, Set(ConfigValueType.OBJECT), ConfigValueLocation(cv), None)))
   }
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def tryNextOnFail(name: String) = false
 }
 
@@ -104,17 +122,27 @@ class FieldCoproductHint[T](key: String) extends CoproductHint[T] {
  * Hint where all coproduct options are tried in order. `from` will choose the first option able to deserialize
  * the config without errors, while `to` will write the config as is, with no disambiguation information.
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 class FirstSuccessCoproductHint[T] extends CoproductHint[T] {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def from(cv: ConfigValue, name: String) = Right(Some(cv))
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def to(cv: ConfigValue, name: String) = Right(cv)
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def tryNextOnFail(name: String) = true
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object CoproductHint {
   implicit def default[T]: CoproductHint[T] = new FieldCoproductHint[T]("type")
 }

@@ -1,22 +1,34 @@
 package pureconfig
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait NamingConvention {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def toTokens(s: String): Seq[String]
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromTokens(l: Seq[String]): String
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait CapitalizedWordsNamingConvention extends NamingConvention {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def toTokens(s: String): Seq[String] = {
     CapitalizedWordsNamingConvention.wordBreakPattern.split(s).map(_.toLowerCase)
   }
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object CapitalizedWordsNamingConvention {
   private val wordBreakPattern = String.format(
     "%s|%s|%s",
@@ -29,9 +41,13 @@ object CapitalizedWordsNamingConvention {
  * CamelCase identifiers look like `camelCase` and `useMorePureconfig`
  * @see https://en.wikipedia.org/wiki/Camel_case
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object CamelCase extends CapitalizedWordsNamingConvention {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromTokens(l: Seq[String]): String = {
     l match {
       case Seq() => ""
@@ -45,19 +61,29 @@ object CamelCase extends CapitalizedWordsNamingConvention {
  * PascalCase identifiers look like e.g.`PascalCase` and `UseMorePureconfig`
  * @see https://en.wikipedia.org/wiki/PascalCase
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object PascalCase extends CapitalizedWordsNamingConvention {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromTokens(l: Seq[String]): String = l.map(_.capitalize).mkString
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 class StringDelimitedNamingConvention(d: String) extends NamingConvention {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def toTokens(s: String): Seq[String] =
     s.split(d).map(_.toLowerCase)
 
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def fromTokens(l: Seq[String]): String =
     l.map(_.toLowerCase).mkString(d)
 }
@@ -66,12 +92,16 @@ class StringDelimitedNamingConvention(d: String) extends NamingConvention {
  * KebabCase identifiers look like `kebab-case` and `use-more-pureconfig`
  * @see http://wiki.c2.com/?KebabCase
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object KebabCase extends StringDelimitedNamingConvention("-")
 
 /**
  * SnakeCase identifiers look like `snake_case` and `use_more_pureconfig`
  * @see https://en.wikipedia.org/wiki/Snake_case
  */
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object SnakeCase extends StringDelimitedNamingConvention("_")

@@ -6,7 +6,9 @@ package pureconfig.error
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 final case class ConfigReaderException[T](failures: ConfigReaderFailures)(implicit ct: ClassTag[T]) extends RuntimeException {
 
   override def getMessage: String = {
@@ -42,7 +44,9 @@ final case class ConfigReaderException[T](failures: ConfigReaderFailures)(implic
 
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object ConfigReaderException {
   private[ConfigReaderException] def descriptionWithLocation(failure: ConfigReaderFailure): String =
     failure.location.fold(failure.description)(_.description + " " + failure.description)

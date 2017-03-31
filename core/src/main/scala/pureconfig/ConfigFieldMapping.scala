@@ -1,12 +1,18 @@
 package pureconfig
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 trait ConfigFieldMapping extends (String => String) {
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply(fieldName: String): String
 }
 
-@pureconfig.deprecated
+@scala.deprecated(
+  message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+  since = "0.7.0")
 object ConfigFieldMapping {
   /**
    * Creates a ConfigFieldMapping from the provided function, mapping names in
@@ -17,7 +23,9 @@ object ConfigFieldMapping {
    *        values to names in the configuration file
    * @return a ConfigFieldMapping created from the provided function.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply(f: String => String): ConfigFieldMapping = new ConfigFieldMapping {
     def apply(fieldName: String): String = f(fieldName)
   }
@@ -34,7 +42,9 @@ object ConfigFieldMapping {
    * @return a ConfigFieldMapping created according to the provided naming
    *         conventions.
    */
-  @pureconfig.deprecated
+  @scala.deprecated(
+    message = "The pureconfig artifact with organization com.github.melrief is deprecated and won't be published anymore. Please update your dependency to use the organization com.github.pureconfig",
+    since = "0.7.0")
   def apply(typeFieldConvention: NamingConvention, configFieldConvention: NamingConvention): ConfigFieldMapping = {
     if (typeFieldConvention == configFieldConvention) {
       apply(identity(_))
