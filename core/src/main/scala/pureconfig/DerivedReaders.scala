@@ -25,16 +25,16 @@ trait AllowMissingKey { self: ConfigReader[_] => }
  * This trait exists to give priority to the `AnyVal` derivation over the generic product derivation.
  */
 trait DerivedReaders extends DerivedReaders1 {
-  implicit def deriveAnyVal[T, U](
-    implicit
-    ev: T <:< AnyVal,
-    generic: Generic[T],
-    unwrapped: Unwrapped.Aux[T, U],
-    reader: ConfigReader[U]): ConfigReader[T] =
-    new ConfigReader[T] {
-      def from(value: ConfigValue): Either[ConfigReaderFailures, T] =
-        reader.from(value).right.map(unwrapped.wrap)
-    }
+  //  implicit def deriveAnyVal[T, U](
+  //    implicit
+  //    ev: T <:< AnyVal,
+  //    generic: Generic[T],
+  //    unwrapped: Unwrapped.Aux[T, U],
+  //    reader: ConfigReader[U]): ConfigReader[T] =
+  //    new ConfigReader[T] {
+  //      def from(value: ConfigValue): Either[ConfigReaderFailures, T] =
+  //        reader.from(value).right.map(unwrapped.wrap)
+  //    }
 }
 
 /**
@@ -71,8 +71,8 @@ trait DerivedReaders1 {
   implicit final def hConsConfigReader[Wrapped, K <: Symbol, V, T <: HList, U <: HList](
     implicit
     key: Witness.Aux[K],
-    vFieldReader: Lazy[ConfigReader[V]],
-    tConfigReader: Lazy[WrappedDefaultValue[Wrapped, T, U]],
+    vFieldReader: Derivation[ConfigReader[V]],
+    tConfigReader: WrappedDefaultValue[Wrapped, T, U],
     hint: ProductHint[Wrapped]): WrappedDefaultValue[Wrapped, FieldType[K, V] :: T, Option[V] :: U] = new WrappedDefaultValue[Wrapped, FieldType[K, V] :: T, Option[V] :: U] {
 
     override def fromConfigObject(co: ConfigObject, default: Option[V] :: U): Either[ConfigReaderFailures, FieldType[K, V] :: T] = {
@@ -92,7 +92,7 @@ trait DerivedReaders1 {
         ConfigValueLocation(co))
       // for performance reasons only, we shouldn't clone the config object unless necessary
       val tailCo = if (hint.allowUnknownKeys) co else co.withoutKey(keyStr)
-      val tailResult = tConfigReader.value.fromWithDefault(tailCo, default.tail)
+      val tailResult = tConfigReader.fromWithDefault(tailCo, default.tail)
       combineResults(headResult, tailResult)((head, tail) => field[K](head) :: tail)
     }
   }
@@ -106,8 +106,8 @@ trait DerivedReaders1 {
     implicit
     coproductHint: CoproductHint[Wrapped],
     vName: Witness.Aux[Name],
-    vFieldConvert: Lazy[ConfigReader[V]],
-    tConfigReader: Lazy[WrappedConfigReader[Wrapped, T]]): WrappedConfigReader[Wrapped, FieldType[Name, V] :+: T] =
+    vFieldConvert: Derivation[ConfigReader[V]],
+    tConfigReader: WrappedConfigReader[Wrapped, T]): WrappedConfigReader[Wrapped, FieldType[Name, V] :+: T] =
     new WrappedConfigReader[Wrapped, FieldType[Name, V] :+: T] {
 
       override def from(config: ConfigValue): Either[ConfigReaderFailures, FieldType[Name, V] :+: T] =
@@ -115,19 +115,19 @@ trait DerivedReaders1 {
           case Right(Some(hintConfig)) =>
             vFieldConvert.value.from(hintConfig) match {
               case Left(_) if coproductHint.tryNextOnFail(vName.value.name) =>
-                tConfigReader.value.from(config).right.map(s => Inr(s))
+                tConfigReader.from(config).right.map(s => Inr(s))
 
               case vTry => vTry.right.map(v => Inl(field[Name](v)))
             }
 
-          case Right(None) => tConfigReader.value.from(config).right.map(s => Inr(s))
+          case Right(None) => tConfigReader.from(config).right.map(s => Inr(s))
           case l: Left[_, _] => l.asInstanceOf[Either[ConfigReaderFailures, FieldType[Name, V] :+: T]]
         }
     }
 
-  implicit def deriveOption[T](implicit conv: Lazy[ConfigReader[T]]) = new OptionConfigReader[T]
+  implicit def deriveOption[T](implicit conv: Derivation[ConfigReader[T]]) = new OptionConfigReader[T]
 
-  class OptionConfigReader[T](implicit conv: Lazy[ConfigReader[T]]) extends ConfigReader[Option[T]] with AllowMissingKey {
+  class OptionConfigReader[T](implicit conv: Derivation[ConfigReader[T]]) extends ConfigReader[Option[T]] with AllowMissingKey {
     override def from(config: ConfigValue): Either[ConfigReaderFailures, Option[T]] = {
       if (config == null || config.unwrapped() == null)
         Right(None)
@@ -138,7 +138,7 @@ trait DerivedReaders1 {
 
   implicit def deriveTraversable[T, F[T] <: TraversableOnce[T]](
     implicit
-    configConvert: Lazy[ConfigReader[T]],
+    configConvert: Derivation[ConfigReader[T]],
     cbf: CanBuildFrom[F[T], T, F[T]]) = new ConfigReader[F[T]] {
 
     override def from(config: ConfigValue): Either[ConfigReaderFailures, F[T]] = {
@@ -176,7 +176,7 @@ trait DerivedReaders1 {
     }
   }
 
-  implicit def deriveMap[T](implicit configConvert: Lazy[ConfigReader[T]]) = new ConfigReader[Map[String, T]] {
+  implicit def deriveMap[T](implicit configConvert: Derivation[ConfigReader[T]]) = new ConfigReader[Map[String, T]] {
 
     override def from(config: ConfigValue): Either[ConfigReaderFailures, Map[String, T]] = {
       config match {
@@ -202,22 +202,21 @@ trait DerivedReaders1 {
     implicit
     gen: LabelledGeneric.Aux[F, Repr],
     default: Default.AsOptions.Aux[F, DefaultRepr],
-    cc: Lazy[WrappedDefaultValue[F, Repr, DefaultRepr]]): ConfigReader[F] = new ConfigReader[F] {
+    cc: WrappedDefaultValue[F, Repr, DefaultRepr]): ConfigReader[F] = new ConfigReader[F] {
 
     override def from(config: ConfigValue): Either[ConfigReaderFailures, F] = {
-      cc.value.fromWithDefault(config, default()).right.map(gen.from)
+      cc.fromWithDefault(config, default()).right.map(gen.from)
     }
   }
 
   implicit final def deriveCoproductInstance[F, Repr <: Coproduct](
     implicit
     gen: LabelledGeneric.Aux[F, Repr],
-    cc: Lazy[WrappedConfigReader[F, Repr]]): ConfigReader[F] = new ConfigReader[F] {
+    cc: WrappedConfigReader[F, Repr]): ConfigReader[F] = new ConfigReader[F] {
     override def from(config: ConfigValue): Either[ConfigReaderFailures, F] = {
-      cc.value.from(config).right.map(gen.from)
+      cc.from(config).right.map(gen.from)
     }
   }
-
 }
 
 object DerivedReaders extends DerivedReaders
