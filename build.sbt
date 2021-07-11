@@ -9,6 +9,21 @@ ThisBuild / organization := "com.github.pureconfig"
 // Enable the OrganizeImports Scalafix rule.
 ThisBuild / scalafixDependencies += "com.github.liancheng" %% "organize-imports" % "0.5.0"
 
+lazy val isScala212 = settingKey[Boolean]("Is the scala version 2.12.")
+
+val only212settings = Seq(
+//  skip := !isScala212.value,
+  Compile / skip := !isScala212.value,
+  publish / skip := !isScala212.value,
+  publishArtifact := isScala212.value,
+  coverageEnabled := isScala212.value,
+  scalafix := isScala212.value,
+  scalafixAll := isScala212.value,
+  scalafixOnCompile := isScala212.value,
+  libraryDependencies := (if (isScala212.value) libraryDependencies.value else Nil),
+  scalafixDependencies := (if (isScala212.value) scalafixDependencies.value else Nil)
+)
+
 lazy val core = (project in file("core"))
   .enablePlugins(BoilerplatePlugin, SbtOsgi)
   .settings(commonSettings)
@@ -55,7 +70,7 @@ lazy val enumeratum = module(project) in file("modules/enumeratum")
 lazy val fs2 = module(project) in file("modules/fs2")
 lazy val generic = genericModule(project) in file("modules/generic") dependsOn `generic-base`
 lazy val `generic-base` = genericModule(project) in file("modules/generic-base")
-lazy val hadoop = module(project) in file("modules/hadoop")
+lazy val hadoop = module(project) in file("modules/hadoop") settings only212settings
 lazy val http4s = module(project) in file("modules/http4s")
 lazy val javax = module(project) in file("modules/javax")
 lazy val joda = module(project) in file("modules/joda")
@@ -80,6 +95,7 @@ lazy val commonSettings = Seq(
   ),
 
   scalaVersion := scala212,
+  isScala212 := scalaVersion.value == scala212,
 
   resolvers ++= Seq(Resolver.sonatypeRepo("releases"), Resolver.sonatypeRepo("snapshots")),
 
@@ -169,9 +185,6 @@ lazy val lintFlags = forScalaVersions {
 
 // Use the same Scala 2.12 version in the root project as in subprojects
 scalaVersion := scala212
-
-// Workaround for https://github.com/sbt/sbt/issues/3465
-crossScalaVersions := Nil
 
 // do not publish the root project
 publish / skip := true
